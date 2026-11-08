@@ -3,13 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>베스트메디</title>
+<title>베스트메디 BESTMEDI | 의약품 · 의료기기 · 화장품 · 건강기능식품</title>
 <meta name="description" content="베스트메디는 의약품, 의료기기, 화장품을 자사 브랜드로 선보이고 약국과 병의원에 의약품을 공급합니다. 건강기능식품도 함께 취급합니다.">
 <meta name="theme-color" content="#081c3a">
+<link rel="canonical" href="https://bestmedi.co.kr/">
+<meta name="robots" content="index,follow">
+<meta name="keywords" content="베스트메디, BESTMEDI, 베스트메디 의약품, 베스트메디 화장품, 스카퓨어 플러스, 아르지니아, 의약품 도매, 의료기기, 건강기능식품">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"베스트메디","alternateName":["BESTMEDI","주식회사 베스트메디","BESTMEDI Co., Ltd."],"url":"https://bestmedi.co.kr/","logo":"https://bestmedi.co.kr/logo.png","image":"https://bestmedi.co.kr/og.jpg","telephone":"+82-31-757-8531","faxNumber":"+82-31-757-8532","email":"n505ch@nate.com","address":{"@type":"PostalAddress","streetAddress":"성남대로1390번길 5, 3층 301호","addressLocality":"성남시 수정구","addressRegion":"경기도","addressCountry":"KR"},"foundingDate":"2020"}</script>
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:site_name" content="베스트메디">
-<meta property="og:title" content="베스트메디">
+<meta property="og:title" content="베스트메디 BESTMEDI">
 <meta property="og:description" content="의약품 · 의료기기 · 화장품 · 건강기능식품">
 <meta property="og:url" content="https://bestmedi.co.kr/">
 <meta property="og:image" content="https://bestmedi.co.kr/og.jpg">
@@ -882,8 +886,8 @@ footer.bottom .logo-word b { color: var(--mint); }
     bt.textContent = on ? 'MUSIC ON' : 'MUSIC';
   }
   var OFFKEY = 'bestmedi_bgm_off';
-  function userOff() { try { return localStorage.getItem(OFFKEY) === '1'; } catch (e) { return false; } }
-  function saveOff(v) { try { localStorage.setItem(OFFKEY, v ? '1' : '0'); } catch (e) {} }
+  function userOff() { try { localStorage.removeItem(OFFKEY); return sessionStorage.getItem(OFFKEY) === '1'; } catch (e) { return false; } }
+  function saveOff(v) { try { sessionStorage.setItem(OFFKEY, v ? '1' : '0'); } catch (e) {} }
   function startBgm() {
     au.volume = 0;
     var p = au.play();
@@ -894,23 +898,28 @@ footer.bottom .logo-word b { color: var(--mint); }
   bb.addEventListener('click', function () {
     if (au.paused) { saveOff(false); startBgm(); } else { saveOff(true); stopBgm(); }
   });
-  /* 기본은 켜짐: 자동 재생을 시도하고, 브라우저가 막으면 입장 화면을 보여 줘 그 클릭에서 시작 */
+  /* 입장 화면: 처음 들어오면 늘 먼저 보여 주고, 「입장하기」 클릭으로 들어가며 음악이 시작됩니다(클릭 = 브라우저가 소리를 허락하는 순간) */
   var enter = document.getElementById('enter');
+  var ENTERKEY = 'bestmedi_entered';
+  function entered() { try { return sessionStorage.getItem(ENTERKEY) === '1'; } catch (e) { return false; } }
+  function markEntered() { try { sessionStorage.setItem(ENTERKEY, '1'); } catch (e) {} }
   function closeEnter() {
+    markEntered();
     enter.classList.add('out');
     document.documentElement.style.overflow = '';
+    window.scrollTo(0, 0);
     setTimeout(function () { enter.hidden = true; }, 950);
   }
   document.getElementById('enterBtn').addEventListener('click', function () { saveOff(false); closeEnter(); startBgm(); });
   document.getElementById('enterSkip').addEventListener('click', function () { saveOff(true); closeEnter(); });
-  if (!userOff()) {
-    startBgm().then(function (ok) {
-      if (ok) return;
-      enter.hidden = false;
-      document.documentElement.style.overflow = 'hidden';
-      var eb = document.getElementById('enterBtn');
-      if (eb && eb.focus) { try { eb.focus({ preventScroll: true }); } catch (e) {} }
-    });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !enter.hidden && !enter.classList.contains('out')) { saveOff(true); closeEnter(); } });
+  if (!entered()) {
+    enter.hidden = false;
+    document.documentElement.style.overflow = 'hidden';
+    var eb = document.getElementById('enterBtn');
+    if (eb && eb.focus) { try { eb.focus({ preventScroll: true }); } catch (e) {} }
+  } else if (!userOff()) {
+    startBgm();   /* 같은 방문 중 새로고침: 브라우저가 허락하면 바로 이어서, 막히면 오른쪽 아래 MUSIC 단추로 */
   }
   var topbar = document.querySelector('header.top');
   var prog = document.getElementById('prog');
