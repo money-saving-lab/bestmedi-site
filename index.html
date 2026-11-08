@@ -826,17 +826,32 @@ footer.bottom .logo-word b { color: var(--mint); }
     bb.setAttribute('aria-label', on ? '배경 음악 끄기' : '배경 음악 켜기');
     bt.textContent = on ? 'MUSIC ON' : 'MUSIC';
   }
+  var OFFKEY = 'bestmedi_bgm_off';
+  function userOff() { try { return localStorage.getItem(OFFKEY) === '1'; } catch (e) { return false; } }
+  function saveOff(v) { try { localStorage.setItem(OFFKEY, v ? '1' : '0'); } catch (e) {} }
+  function startBgm() {
+    au.volume = 0;
+    var p = au.play();
+    if (p && p.then) { return p.then(function () { setBgm(true); fade(VOL); return true; }).catch(function () { setBgm(false); return false; }); }
+    setBgm(true); fade(VOL); return Promise.resolve(true);
+  }
+  function stopBgm() { setBgm(false); fade(0, function () { au.pause(); }); }
   bb.addEventListener('click', function () {
-    if (au.paused) {
-      au.volume = 0;
-      var p = au.play();
-      if (p && p.then) { p.then(function () { setBgm(true); fade(VOL); }).catch(function () { setBgm(false); }); }
-      else { setBgm(true); fade(VOL); }
-    } else {
-      setBgm(false);
-      fade(0, function () { au.pause(); });
-    }
+    if (au.paused) { saveOff(false); startBgm(); } else { saveOff(true); stopBgm(); }
   });
+  /* 기본은 켜짐: 먼저 자동 재생을 시도하고, 브라우저가 막으면 첫 클릭·터치·키 입력에서 바로 시작 */
+  if (!userOff()) {
+    startBgm().then(function (ok) {
+      if (ok) return;
+      var evs = ['pointerdown', 'keydown', 'touchend'];
+      function first(e) {
+        if (e && e.target && bb.contains(e.target)) return;
+        evs.forEach(function (n) { document.removeEventListener(n, first, true); });
+        if (au.paused && !userOff()) startBgm();
+      }
+      evs.forEach(function (n) { document.addEventListener(n, first, true); });
+    });
+  }
   var topbar = document.querySelector('header.top');
   var prog = document.getElementById('prog');
   function bar() { topbar.classList.toggle('solid', window.scrollY > 60); var h = document.documentElement.scrollHeight - innerHeight; prog.style.width = (h > 0 ? Math.min(100, scrollY / h * 100) : 0) + '%'; }
