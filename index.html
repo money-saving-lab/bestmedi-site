@@ -1,4 +1,8 @@
+<!doctype html>
+<html lang="ko">
+<head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>베스트메디</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -335,7 +339,10 @@ footer.bottom .logo-word b { color: var(--mint); }
   .flow .dot::after { transition: none; width: 100%; }
   .hero-bg, .hero-3d, .cube3d, .about-photo video, .contact-band video { display: none; }
 }
+[hidden] { display: none !important; }
 </style>
+</head>
+<body>
 
 
 <header class="top">
@@ -772,3 +779,5 @@ footer.bottom .logo-word b { color: var(--mint); }
   if (hp && !reduce) { window.addEventListener('scroll', function () { var y = Math.min(window.scrollY, 700); hp.style.marginTop = (y * 0.18) + 'px'; }, { passive: true }); }
 })();
 </script>
+</body>
+</html>
