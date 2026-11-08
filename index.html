@@ -4,6 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>베스트메디</title>
+<meta name="description" content="베스트메디는 의약품, 의료기기, 화장품을 자사 브랜드로 선보이고 약국과 병의원에 의약품을 공급합니다. 건강기능식품도 함께 취급합니다.">
+<meta name="theme-color" content="#081c3a">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="베스트메디">
+<meta property="og:title" content="베스트메디">
+<meta property="og:description" content="의약품 · 의료기기 · 화장품 · 건강기능식품">
+<meta property="og:url" content="https://bestmedi.co.kr/">
+<meta property="og:image" content="https://bestmedi.co.kr/og.jpg">
+<link rel="icon" href="favicon.png">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -164,6 +174,27 @@ nav.menu a:hover, nav.menu a:focus-visible { border-bottom-color: var(--brand); 
 .sec-head.reveal h2 { letter-spacing: .28em; opacity: 0; transition: letter-spacing 1.5s cubic-bezier(.2,.7,.2,1), opacity 1.2s ease; }
 .sec-head.reveal.in h2 { letter-spacing: -.02em; opacity: 1; }
 @media (prefers-reduced-motion: reduce) { .hero h1 { animation: none; } .sec-head.reveal h2 { letter-spacing: -.02em; opacity: 1; transition: none; } .tilebg, .hero-leak { display: none; } }
+/* 배경 음악 단추 */
+.bgm-btn { position: fixed; right: max(18px, env(safe-area-inset-right, 0px)); bottom: max(18px, env(safe-area-inset-bottom, 0px)); z-index: 70; display: inline-flex; align-items: center; gap: 12px; height: 46px; padding: 0 20px 0 16px; border-radius: 999px; border: 1px solid rgba(200,164,99,.7); background: rgba(8,28,58,.88); backdrop-filter: blur(8px); color: #fff; font: 500 12.5px/1 var(--font-mono); letter-spacing: .22em; cursor: pointer; box-shadow: 0 14px 30px -14px rgba(0,0,0,.6); }
+.bgm-btn:hover, .bgm-btn:focus-visible { background: var(--navy); border-color: var(--gold); outline: none; }
+.bgm-btn .eq { display: inline-flex; align-items: flex-end; gap: 3px; height: 16px; }
+.bgm-btn .eq i { width: 3px; height: 4px; border-radius: 2px; background: var(--gold); display: block; }
+.bgm-btn[aria-pressed="true"] .eq i { animation: eqb 1s ease-in-out infinite; }
+.bgm-btn[aria-pressed="true"] .eq i:nth-child(2) { animation-delay: .25s; }
+.bgm-btn[aria-pressed="true"] .eq i:nth-child(3) { animation-delay: .5s; }
+@keyframes eqb { 0%, 100% { height: 4px; } 50% { height: 16px; } }
+@media (prefers-reduced-motion: reduce) { .bgm-btn[aria-pressed="true"] .eq i { animation: none; height: 12px; } }
+/* 홈페이지 다듬기 */
+.skip { position: fixed; left: 12px; top: -60px; z-index: 100; background: var(--gold); color: var(--navy); padding: 10px 16px; border-radius: 4px; font-weight: 600; text-decoration: none; transition: top .2s; }
+.skip:focus { top: 12px; outline: none; }
+.progress { position: fixed; left: 0; top: 0; height: 3px; width: 0; z-index: 90; background: linear-gradient(90deg, var(--gold), #f0d9a0); pointer-events: none; }
+.contact dd a { color: #fff; text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 5px; text-decoration-thickness: 1px; }
+.contact dd a:hover, .contact dd a:focus-visible { color: var(--gold); outline: none; }
+.cta-btn { display: inline-flex; align-items: center; gap: 12px; margin-top: 30px; padding: 15px 30px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-weight: 500; letter-spacing: .08em; border-radius: 2px; transition: background .3s, color .3s; }
+.cta-btn::after { content: ""; width: 26px; height: 1px; background: currentColor; transition: width .3s; }
+.cta-btn:hover, .cta-btn:focus-visible { background: var(--gold); color: var(--navy); outline: none; }
+.cta-btn:hover::after { width: 40px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 /* 공통 구역 */
 section.block { padding-block: 132px; }
 section.block.tint { background: var(--mist); }
@@ -344,6 +375,9 @@ footer.bottom .logo-word b { color: var(--mint); }
 </head>
 <body>
 
+
+<a class="skip" href="#about">본문으로 건너뛰기</a>
+<div class="progress" id="prog" aria-hidden="true"></div>
 
 <header class="top">
   <div class="wrap">
@@ -597,12 +631,13 @@ footer.bottom .logo-word b { color: var(--mint); }
             <div class="eyebrow">Contact</div>
             <h2>거래와 제품 문의는<br>아래로 연락 주세요.</h2>
             <p class="lead">약국·병의원 거래, 자사 제품과 건강기능식품 입점·구매 문의를 받습니다.</p>
+            <a class="cta-btn" href="mailto:n505ch@nate.com?subject=%EA%B1%B0%EB%9E%98%20%EB%AC%B8%EC%9D%98">메일로 문의하기</a>
           </div>
           <dl>
-            <div><dt>전화</dt><dd>031-757-8531</dd></div>
+            <div><dt>전화</dt><dd><a href="tel:0317578531">031-757-8531</a></dd></div>
             <div><dt>팩스</dt><dd>031-757-8532</dd></div>
-            <div><dt>이메일</dt><dd>n505ch@nate.com</dd></div>
-            <div><dt>주소</dt><dd>경기도 성남시 수정구 성남대로1390번길 5, 3층 301호</dd></div>
+            <div><dt>이메일</dt><dd><a href="mailto:n505ch@nate.com">n505ch@nate.com</a></dd></div>
+            <div><dt>주소</dt><dd>경기도 성남시 수정구 성남대로1390번길 5, 3층 301호 · <a href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EC%84%B1%EB%82%A8%EC%8B%9C%20%EC%88%98%EC%A0%95%EA%B5%AC%20%EC%84%B1%EB%82%A8%EB%8C%80%EB%A1%9C1390%EB%B2%88%EA%B8%B8%205" target="_blank" rel="noopener">지도 보기</a></dd></div>
           </dl>
         </div>
       </div>
@@ -630,6 +665,9 @@ footer.bottom .logo-word b { color: var(--mint); }
 </footer>
 
 <div class="lightbox" id="lightbox" hidden role="dialog" aria-label="사진 크게 보기"><img id="lightbox-img" alt=""></div>
+
+<audio id="bgm" src="bgm.mp3" loop preload="none"></audio>
+<button class="bgm-btn" id="bgmBtn" type="button" aria-pressed="false" aria-label="배경 음악 켜기"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span id="bgmT">MUSIC</span></button>
 
 <script>
 (function () {
@@ -772,8 +810,36 @@ footer.bottom .logo-word b { color: var(--mint); }
     var co = new IntersectionObserver(function (es) { es.forEach(function (x) { if (x.isIntersecting) { runCount(x.target); co.unobserve(x.target); } }); }, { threshold: 0.6 });
     counters.forEach(function (c) { co.observe(c); });
   }
+  /* 배경 음악: 켜기 단추를 눌러야 소리가 납니다(브라우저 규칙) · 천천히 커지고 천천히 줄어듭니다 */
+  var au = document.getElementById('bgm'), bb = document.getElementById('bgmBtn'), bt = document.getElementById('bgmT');
+  var fadeT = null, VOL = 0.32;
+  function fade(to, done) {
+    clearInterval(fadeT);
+    fadeT = setInterval(function () {
+      var d = to - au.volume;
+      if (Math.abs(d) < 0.02) { au.volume = to; clearInterval(fadeT); if (done) done(); return; }
+      au.volume = Math.max(0, Math.min(1, au.volume + (d > 0 ? 0.02 : -0.03)));
+    }, 60);
+  }
+  function setBgm(on) {
+    bb.setAttribute('aria-pressed', on ? 'true' : 'false');
+    bb.setAttribute('aria-label', on ? '배경 음악 끄기' : '배경 음악 켜기');
+    bt.textContent = on ? 'MUSIC ON' : 'MUSIC';
+  }
+  bb.addEventListener('click', function () {
+    if (au.paused) {
+      au.volume = 0;
+      var p = au.play();
+      if (p && p.then) { p.then(function () { setBgm(true); fade(VOL); }).catch(function () { setBgm(false); }); }
+      else { setBgm(true); fade(VOL); }
+    } else {
+      setBgm(false);
+      fade(0, function () { au.pause(); });
+    }
+  });
   var topbar = document.querySelector('header.top');
-  function bar() { topbar.classList.toggle('solid', window.scrollY > 60); }
+  var prog = document.getElementById('prog');
+  function bar() { topbar.classList.toggle('solid', window.scrollY > 60); var h = document.documentElement.scrollHeight - innerHeight; prog.style.width = (h > 0 ? Math.min(100, scrollY / h * 100) : 0) + '%'; }
   window.addEventListener('scroll', bar, { passive: true }); bar();
   var hp = document.querySelector('.hero-photo');
   if (hp && !reduce) { window.addEventListener('scroll', function () { var y = Math.min(window.scrollY, 700); hp.style.marginTop = (y * 0.18) + 'px'; }, { passive: true }); }
